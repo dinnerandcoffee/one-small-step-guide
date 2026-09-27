@@ -1,0 +1,217 @@
+:root {
+  --bg: #f6f3ec;
+  --paper: #fffdf8;
+  --ink: #1d211e;
+  --muted: #6d726c;
+  --line: #dedbd2;
+  --accent: #334b3c;
+  --soft: #e9efe8;
+  --danger: #5a2e2e;
+  --radius: 28px;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  overflow: hidden;
+}
+button, a { -webkit-tap-highlight-color: transparent; }
+button { font: inherit; }
+.app-shell {
+  width: min(100%, 520px);
+  height: 100dvh;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--paper);
+  box-shadow: 0 0 40px rgb(20 25 20 / 0.08);
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top) + 14px) 20px 12px;
+  border-bottom: 1px solid var(--line);
+  background: rgb(255 253 248 / 0.96);
+  backdrop-filter: blur(10px);
+}
+.brand { font-weight: 760; letter-spacing: -0.02em; }
+.help-link {
+  border: 0;
+  background: transparent;
+  color: var(--danger);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 8px 0;
+}
+.stage {
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px 24px 24px;
+  opacity: 0;
+  transform: translateX(28px);
+  pointer-events: none;
+  transition: transform .24s ease, opacity .24s ease;
+  overflow-y: auto;
+}
+.screen.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.screen.exit-left { transform: translateX(-28px); }
+.hero-mark {
+  width: 58px;
+  height: 58px;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.65rem;
+  margin-bottom: 24px;
+}
+.eyebrow, .step-label {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 0.83rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+h1, h2 {
+  margin: 0;
+  max-width: 15ch;
+  font-size: clamp(1.55rem, 6.1vw, 2.05rem);
+  line-height: 1.3;
+  letter-spacing: -0.045em;
+  word-break: keep-all;
+}
+.lead {
+  margin: 18px 0 0;
+  max-width: 29rem;
+  color: var(--muted);
+  font-size: clamp(0.98rem, 3.9vw, 1.08rem);
+  word-break: keep-all;
+}
+blockquote {
+  margin: 24px 0 0;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--soft);
+  font-size: 1.05rem;
+  font-weight: 720;
+}
+details { margin-top: 20px; color: var(--muted); font-size: .92rem; }
+summary { cursor: pointer; font-weight: 700; color: var(--accent); }
+details p { margin: 10px 0 0; }
+.screen-actions {
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  gap: 10px;
+  margin-top: 34px;
+}
+.screen-actions.single { grid-template-columns: 1fr; }
+.primary, .ghost {
+  min-height: 52px;
+  border-radius: 16px;
+  padding: 0 14px;
+  border: 1px solid var(--accent);
+  font-size: clamp(.92rem, 3.7vw, 1rem);
+  font-weight: 760;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.primary { background: var(--accent); color: #fff; }
+.ghost { background: transparent; color: var(--accent); }
+.primary:active, .ghost:active, .chip:active { transform: scale(.985); }
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+.chip {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 10px 13px;
+  font-size: .88rem;
+  font-weight: 650;
+}
+.chip.selected { border-color: var(--accent); background: var(--soft); }
+.bottom-nav {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px calc(env(safe-area-inset-bottom) + 12px);
+  border-top: 1px solid var(--line);
+  background: rgb(255 253 248 / 0.98);
+}
+.bottom-nav > button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 50%;
+  color: var(--ink);
+  font-size: 1.5rem;
+}
+.bottom-nav > button:disabled { opacity: .25; }
+.progress-wrap { display: grid; gap: 6px; }
+.progress { height: 4px; border-radius: 999px; background: #ebe8e0; overflow: hidden; }
+.progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .22s ease; }
+#progressText { text-align: center; font-size: .72rem; color: var(--muted); }
+.help-dialog {
+  width: min(calc(100% - 32px), 460px);
+  border: 0;
+  border-radius: 24px;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 24px 80px rgb(0 0 0 / .28);
+}
+.help-dialog::backdrop { background: rgb(18 21 18 / .54); backdrop-filter: blur(3px); }
+.help-dialog form { position: relative; padding: 28px 22px 22px; }
+.help-dialog h2 { font-size: 1.45rem; max-width: 18ch; }
+.help-dialog p { color: var(--muted); }
+.close { position: absolute; right: 14px; top: 12px; border: 0; background: transparent; font-size: 1.8rem; }
+.call-button {
+  display: block;
+  margin-top: 12px;
+  text-align: center;
+  text-decoration: none;
+  background: var(--danger);
+  color: #fff;
+  font-weight: 800;
+  padding: 14px;
+  border-radius: 14px;
+}
+.secondary-call { background: #fff; color: var(--danger); border: 1px solid var(--danger); }
+.fine { font-size: .78rem; margin-bottom: 0; }
+@media (max-width: 360px) {
+  .screen { padding-inline: 18px; }
+  .topbar { padding-inline: 18px; }
+  .screen-actions { grid-template-columns: 1fr 1.12fr; }
+  .primary, .ghost { padding-inline: 10px; font-size: .88rem; }
+}
+@media (min-width: 700px) {
+  body { display: grid; place-items: center; background: #e9e6de; }
+  .app-shell { height: min(860px, 94dvh); border-radius: 30px; overflow: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
