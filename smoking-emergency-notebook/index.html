@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>금연 응급수첩</title>
+<style>
+:root{
+  --bg:#f4efe3; --paper:#fffdf7; --ink:#1f1f1f; --muted:#6b675f;
+  --line:#ddd3bd; --accent:#2f5d50; --soft:#eef3ef; --danger:#9b3d32;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+body{display:flex;justify-content:center;align-items:center;overflow:hidden}
+.app{width:min(100%,520px);height:100dvh;max-height:920px;background:var(--paper);position:relative;overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.12)}
+.book-edge{position:absolute;left:0;top:0;bottom:0;width:10px;background:linear-gradient(90deg,#b8a783,#e3dac6);z-index:10}
+.topbar{position:absolute;top:0;left:10px;right:0;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--line);background:rgba(255,253,247,.96);z-index:8}
+.brand{font-weight:800;letter-spacing:-.03em}.count{font-size:13px;color:var(--muted)}
+.deck{height:100%;display:flex;transition:transform .33s cubic-bezier(.2,.8,.2,1);touch-action:pan-y}
+.page{min-width:100%;height:100%;padding:86px 28px 132px 34px;overflow-y:auto;position:relative;background:
+  linear-gradient(90deg,rgba(143,118,74,.08) 1px,transparent 1px) 28px 0/1px 100%, var(--paper)}
+.kicker{font-size:13px;font-weight:800;color:var(--accent);letter-spacing:.08em;margin-bottom:10px}
+h1{font-size:34px;line-height:1.15;margin:0 0 18px;letter-spacing:-.045em}
+h2{font-size:26px;line-height:1.25;margin:0 0 14px;letter-spacing:-.035em}
+p{font-size:18px;line-height:1.65;margin:10px 0;color:#2d2c29}
+.lead{font-size:22px;line-height:1.55;font-weight:650}
+.quote{margin:24px 0;padding:20px 18px;border-left:5px solid var(--accent);background:var(--soft);font-size:21px;line-height:1.5;font-weight:800}
+.action{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.action strong{display:block;font-size:14px;color:var(--muted);margin-bottom:8px}.action div{font-size:22px;line-height:1.45;font-weight:800}
+ul{padding-left:24px;font-size:18px;line-height:1.7}
+.cover{display:flex;flex-direction:column;justify-content:center;text-align:center;padding-bottom:160px}
+.cover .icon{font-size:58px;margin-bottom:18px}.cover h1{font-size:44px}.cover p{color:var(--muted)}
+.badge{display:inline-block;margin:8px auto 0;padding:7px 11px;border-radius:999px;background:var(--soft);color:var(--accent);font-size:13px;font-weight:800}
+.nav{position:absolute;left:10px;right:0;bottom:0;padding:14px 18px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(255,253,247,.6),#fffdf7 25%);z-index:9;border-top:1px solid var(--line)}
+.row{display:flex;gap:10px}.btn{appearance:none;border:0;border-radius:14px;padding:15px 14px;font-size:16px;font-weight:800;cursor:pointer}.btn.primary{flex:1;background:var(--accent);color:#fff}.btn.secondary{flex:1;background:#ece8df;color:#2f2d29}.btn.ghost{background:transparent;color:var(--muted);padding:12px 8px}.home-actions{display:grid;gap:10px;margin-top:30px}
+.progress{height:3px;background:#ece5d7;position:absolute;top:54px;left:10px;right:0;z-index:9}.progress span{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.emergency{color:var(--danger)}
+.small{font-size:14px;color:var(--muted)}
+@media (min-width:700px){body{padding:24px}.app{height:min(920px,calc(100dvh - 48px));border-radius:24px}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="book-edge"></div>
+  <div class="topbar"><div class="brand">금연 응급수첩</div><div class="count" id="count">표지</div></div>
+  <div class="progress"><span id="progress"></span></div>
+  <div class="deck" id="deck">
+
+    <section class="page cover" data-label="표지">
+      <div class="icon">📖</div>
+      <h1>금연<br>응급수첩</h1>
+      <p class="lead">담배 생각이 나는 순간<br>생각하지 말고 펼친다.</p>
+      <span class="badge">한 단계가 안 되면 바로 다음 단계</span>
+      <div class="home-actions">
+        <button class="btn primary" onclick="go(1)">지금 시작하기</button>
+        <button class="btn secondary" onclick="go(8)">10초 응급 처방</button>
+        <button class="btn ghost" onclick="go(7)">마음 다잡기</button>
+      </div>
+    </section>
+
+    <section class="page" data-label="1단계">
+      <div class="kicker">STEP 1</div><h1>3분만 미룬다</h1>
+      <p class="lead">지금 피울지 말지 결정하지 않는다.</p>
+      <div class="quote">“지금은 안 피운다.<br>3분 뒤의 일은 3분 뒤에 생각한다.”</div>
+      <div class="action"><strong>지금 바로</strong><div>물 한 컵을 마신다.</div></div>
+      <p>담배와 머릿속에서 협상하지 않는다. 먼저 행동한다.</p>
+    </section>
+
+    <section class="page" data-label="2단계">
+      <div class="kicker">STEP 2</div><h1>입을 다른 일에 쓴다</h1>
+      <p class="lead">입과 손의 습관을 다른 행동으로 바꾼다.</p>
+      <ul><li>양치하기</li><li>껌 씹기</li><li>사탕 하나 먹기</li><li>찬물 또는 따뜻한 차 마시기</li></ul>
+      <div class="action"><strong>중요</strong><div>가만히 앉아서 담배 생각만 하지 않는다.</div></div>
+    </section>
+
+    <section class="page" data-label="3단계">
+      <div class="kicker">STEP 3</div><h1>몸을 움직인다</h1>
+      <p class="lead">머리로 버티지 말고 몸의 상태를 바꾼다.</p>
+      <ul><li>3~5분 걷기</li><li>계단 오르기</li><li>세수 또는 샤워</li><li>스트레칭</li><li>책상이나 방 정리</li></ul>
+      <div class="quote">장소가 바뀌고 몸이 움직이면 생각도 바뀐다.</div>
+    </section>
+
+    <section class="page" data-label="4단계">
+      <div class="kicker">STEP 4</div><h1>머리를 다른 일로 점령한다</h1>
+      <p class="lead">담배 생각이 들어올 자리를 다른 집중으로 채운다.</p>
+      <ul><li>재미있는 영상 한 편</li><li>누군가에게 전화하기</li><li>설거지나 청소</li><li>간단한 일을 하나 끝내기</li><li>밖에 나가 필요한 물건 사오기</li></ul>
+      <div class="action"><strong>조건</strong><div>담배를 생각할 틈이 없는 행동이어야 한다.</div></div>
+    </section>
+
+    <section class="page" data-label="5단계">
+      <div class="kicker">STEP 5</div><h1>환경을 끊는다</h1>
+      <p class="lead">의지로 버티지 말고 담배와 물리적으로 멀어진다.</p>
+      <ul><li>담배와 라이터를 눈앞에서 치운다</li><li>흡연 장소를 벗어난다</li><li>담배를 살 수 있는 동선에서 벗어난다</li><li>공원·마트·카페처럼 다른 장소로 이동한다</li></ul>
+      <div class="quote">담배를 피우기 어렵게 만든다.</div>
+    </section>
+
+    <section class="page" data-label="6단계">
+      <div class="kicker">STEP 6</div><h1>오늘 이 한 번만 넘긴다</h1>
+      <p class="lead">평생을 지금 결정할 필요가 없다.</p>
+      <div class="quote">“오늘 이 한 번만 넘긴다.”</div>
+      <p>아직도 생각난다면 다시 걷고, 다시 물을 마시고, 다시 다른 일을 한다.</p>
+      <p><strong>욕구가 다른 곳으로 옮겨갈 때까지 반복한다.</strong></p>
+    </section>
+
+    <section class="page" data-label="마음정리">
+      <div class="kicker">RESET</div><h1>이제 마음을 다잡는다</h1>
+      <p class="lead">방금 욕구는 지나갔다. 이제 이 순간을 내 편으로 만든다.</p>
+      <div class="quote">나는 담배를 참는 사람이 아니다.<br><br>나는 <strong>담배를 피우지 않는 사람</strong>이다.</div>
+      <h2>한 개비는 한 개비가 아니다</h2>
+      <p>가장 쉬운 방법은 첫 번째 담배를 피우지 않는 것이다. 그러면 두 번째 담배와 싸울 필요도 없다.</p>
+      <h2>오늘 이긴 것으로 충분하다</h2>
+      <p>내일 또 생각나면 내일 다시 이 수첩을 펼치면 된다.</p>
+    </section>
+
+    <section class="page" data-label="10초 응급">
+      <div class="kicker emergency">SOS · 10초 응급</div><h1>읽지 말고 바로 한다</h1>
+      <div class="action"><strong>①</strong><div>물 한 컵 마셔라.</div></div>
+      <div class="action"><strong>② 안 되면</strong><div>양치하거나 껌을 씹어라.</div></div>
+      <div class="action"><strong>③ 그래도 안 되면</strong><div>자리에서 나와 걸어라.</div></div>
+      <div class="action"><strong>④ 또 생각나면</strong><div>집중할 일을 시작하라.</div></div>
+      <div class="action"><strong>⑤ 끝까지 남으면</strong><div>담배를 구할 수 없는 곳으로 이동하라.</div></div>
+      <div class="quote">욕구가 사라질 때까지 담배와 협상하지 않는다.</div>
+    </section>
+
+  </div>
+
+  <div class="nav" id="nav">
+    <div class="row" id="normalNav">
+      <button class="btn secondary" id="betterBtn" onclick="better()">괜찮아졌다</button>
+      <button class="btn primary" id="nextBtn" onclick="next()">아직 생각난다 →</button>
+    </div>
+    <div class="row" id="specialNav" style="display:none">
+      <button class="btn secondary" onclick="go(0)">처음으로</button>
+      <button class="btn primary" onclick="go(1)">다시 시작</button>
+    </div>
+  </div>
+</div>
+<script>
+const deck=document.getElementById('deck');
+const pages=[...document.querySelectorAll('.page')];
+const count=document.getElementById('count');
+const progress=document.getElementById('progress');
+const normalNav=document.getElementById('normalNav');
+const specialNav=document.getElementById('specialNav');
+const betterBtn=document.getElementById('betterBtn');
+const nextBtn=document.getElementById('nextBtn');
+let index=0, startX=0, deltaX=0;
+
+function render(){
+  deck.style.transform=`translateX(${-index*100}%)`;
+  count.textContent=pages[index].dataset.label;
+  progress.style.width=((index)/(pages.length-1)*100)+'%';
+  pages[index].scrollTop=0;
+  const isCover=index===0, isMind=index===7, isSOS=index===8;
+  document.querySelector('.topbar').style.visibility=isCover?'hidden':'visible';
+  document.querySelector('.progress').style.visibility=isCover?'hidden':'visible';
+  if(isCover){ document.getElementById('nav').style.display='none'; return; }
+  document.getElementById('nav').style.display='block';
+  if(isMind || isSOS){ normalNav.style.display='none'; specialNav.style.display='flex'; }
+  else {
+    normalNav.style.display='flex'; specialNav.style.display='none';
+    betterBtn.textContent='괜찮아졌다';
+    nextBtn.textContent=index===6?'마음 정리로 →':'아직 생각난다 →';
+  }
+}
+function go(i){index=Math.max(0,Math.min(i,pages.length-1));render()}
+function next(){ if(index>=1 && index<6) go(index+1); else if(index===6) go(7); else go(Math.min(index+1,pages.length-1)); }
+function better(){ go(7); }
+
+deck.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;deltaX=0},{passive:true});
+deck.addEventListener('touchmove',e=>{deltaX=e.touches[0].clientX-startX},{passive:true});
+deck.addEventListener('touchend',()=>{
+  if(Math.abs(deltaX)>60){ if(deltaX<0 && index<pages.length-1) go(index+1); if(deltaX>0 && index>0) go(index-1); }
+});
+window.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(index+1);if(e.key==='ArrowLeft')go(index-1)});
+render();
+</script>
+</body>
+</html>
